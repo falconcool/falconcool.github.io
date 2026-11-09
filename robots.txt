@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 
-Sitemap: https://vet-friend.example/sitemap.xml
+Sitemap: https://falconcool.github.io/sitemap.xml
