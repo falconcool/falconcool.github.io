@@ -1,0 +1,64 @@
+{
+ "rows": 200000,
+ "python": "3.12.3",
+ "sqlite": "3.45.1",
+ "queries": [
+  {
+   "id": "Q1",
+   "title": "Счётчик новых заявок",
+   "sql": "SELECT COUNT(*) FROM appointments WHERE status = ?",
+   "plan_before": "SCAN appointments",
+   "plan_after": "SEARCH appointments USING COVERING INDEX idx_app_status (status=?)",
+   "ms_before": 12.043,
+   "ms_after": 0.021
+  },
+  {
+   "id": "Q2",
+   "title": "История заявок клиента по телефону",
+   "sql": "SELECT a.id, a.created_at, a.name, s.name FROM appointments a JOIN services s ON s.id = a.service_id WHERE a.phone = ? ORDER BY a.id DESC",
+   "plan_before": "SCAN a → SEARCH s USING INTEGER PRIMARY KEY (rowid=?)",
+   "plan_after": "SEARCH a USING INDEX idx_app_phone (phone=?) → SEARCH s USING INTEGER PRIMARY KEY (rowid=?)",
+   "ms_before": 11.959,
+   "ms_after": 0.024
+  },
+  {
+   "id": "Q3",
+   "title": "Отчёт за месяц по услугам",
+   "sql": "SELECT s.name, COUNT(*) FROM appointments a JOIN services s ON s.id = a.service_id WHERE a.created_at >= ? AND a.created_at < ? GROUP BY s.id",
+   "plan_before": "SCAN a → SEARCH s USING INTEGER PRIMARY KEY (rowid=?) → USE TEMP B-TREE FOR GROUP BY",
+   "plan_after": "SEARCH a USING COVERING INDEX idx_app_created_service (created_at>? AND created_at<?) → SEARCH s USING INTEGER PRIMARY KEY (rowid=?) → USE TEMP B-TREE FOR GROUP BY",
+   "ms_before": 13.957,
+   "ms_after": 1.814
+  },
+  {
+   "id": "Q4",
+   "title": "Страница №3001 списка заявок (50 на странице)",
+   "sql": "SELECT a.id, a.created_at, a.name FROM appointments a ORDER BY a.id DESC LIMIT 50 OFFSET ?  →  SELECT a.id, a.created_at, a.name FROM appointments a WHERE a.id < ? ORDER BY a.id DESC LIMIT 50",
+   "plan_before": "SCAN a",
+   "plan_after": "SEARCH a USING INTEGER PRIMARY KEY (rowid<?)",
+   "ms_before": 3.031,
+   "ms_after": 0.03
+  },
+  {
+   "id": "Q5",
+   "title": "Последние 50 заявок с названием услуги",
+   "sql": "1 запрос + 50 запросов  →  один запрос с JOIN",
+   "plan_before": "51 обращение к базе",
+   "plan_after": "SCAN a → SEARCH s USING INTEGER PRIMARY KEY (rowid=?)",
+   "ms_before": 0.216,
+   "ms_after": 0.038
+  }
+ ],
+ "fill_s": 2.58,
+ "index_build_s": 0.3,
+ "size_mb": {
+  "before": 15.4,
+  "after": 28.1
+ },
+ "insert": {
+  "single_ms_before": 0.75,
+  "single_ms_after": 0.87,
+  "batch_s_before": 0.09,
+  "batch_s_after": 0.31
+ }
+}

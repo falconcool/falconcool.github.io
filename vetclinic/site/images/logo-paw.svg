@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 30 30">
+<title>Значок лапы — логотип ветклиники</title>
+<circle cx="15" cy="15" r="14" stroke="#2B3F35" stroke-width="1.4" fill="none"/>
+<ellipse cx="9.2" cy="13.2" rx="2" ry="2.8" transform="rotate(-25 9.2 13.2)" fill="#2B3F35"/>
+<ellipse cx="13" cy="9.6" rx="2" ry="3" fill="#2B3F35"/>
+<ellipse cx="17" cy="9.6" rx="2" ry="3" fill="#2B3F35"/>
+<ellipse cx="20.8" cy="13.2" rx="2" ry="2.8" transform="rotate(25 20.8 13.2)" fill="#2B3F35"/>
+<path d="M15 14.2c3.4 0 6.2 3 6.2 5.6 0 2-1.6 2.9-3.2 2.9-1.1 0-1.9-.4-3-.4s-1.9.4-3 .4c-1.6 0-3.2-.9-3.2-2.9 0-2.6 2.8-5.6 6.2-5.6Z" fill="#D98E3B"/>
+</svg>
